@@ -1,0 +1,621 @@
+﻿<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Geodesy</name>
+    </assembly>
+    <members>
+        <member name="T:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight">
+            <summary>
+            楕円体高とジオポテンシャル高度をセットする構造体
+            <para>GeopotentialAltitudeクラスのみでの利用を想定しており、本構造体自体には矛盾の検出などの仕組みは実装されていないことにご注意ください。</para>
+            </summary>
+        </member>
+        <member name="M:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight.CompareTo(Geodesy.Geopotential.EllipsoidAndGeopotentialHeight)">
+            <summary>
+            比較メソッド
+            <para>楕円体高の過多によって判定します。</para>
+            </summary>
+            <param name="other">比較対象</param>
+            <returns>自分自身がotherより小さいときはマイナスの数、大きいときはプラスの数、同じときは0を返す</returns>
+        </member>
+        <member name="M:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight.CompareTo(System.Object)">
+            <summary>
+            比較メソッド
+            <para>楕円体高の過多によって判定します。</para>
+            </summary>
+            <param name="obj">比較対象</param>
+            <returns>自分自身がotherより小さいときはマイナスの数、大きいときはプラスの数、同じときは0を返す</returns>
+        </member>
+        <member name="M:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight.#ctor(System.Double,System.Double)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="ellipsoidHeight">楕円体高[m]</param>
+            <param name="geopotentialHeight">ジオポテンシャル高度[m]</param>
+        </member>
+        <member name="P:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight.EllipsoidHeight">
+            <summary>
+            楕円体高[m]
+            </summary>
+        </member>
+        <member name="P:Geodesy.Geopotential.EllipsoidAndGeopotentialHeight.GeopotentialHeight">
+            <summary>
+            ジオポテンシャル高度[m]
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.Wgs84">
+            <summary>
+            WGS84測地系を表現するクラス
+            <para>デフォルトではG873のパラメータを使用します。</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.Wgs84G873">
+            <summary>
+            WGS84座標系（G873）における各種パラメータ
+            <para>参考：西修二郎訳，GNSSのすべて，p.265，2010.2．</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.IDatum">
+            <summary>
+            準拠楕円体クラスのインターフェイス
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.a">
+            <summary>
+            Equatorial Radius
+            <para>赤道半径（楕円体長半径）[m]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.b">
+            <summary>
+            Short Radius
+            <para>短半径</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.c">
+            <summary>
+            光速[m/s]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.e">
+            <summary>
+            Eccentricity
+            <para>離心率e</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.e2">
+            <summary>
+            Square Eccentricity
+            <para>離心率の二乗</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.InversOblateness">
+            <summary>
+            扁平率の逆数
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.m">
+            <summary>
+            物理的定数その1
+            <para>ω^2a^2b/(GM)またはω^2a/NormalGravityAtEquator</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.NormalGravityAtEquator">
+            <summary>
+            赤道での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.NormalGravityAtPole">
+            <summary>
+            極での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.PI">
+            <summary>
+            円周率π
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.GM">
+            <summary>
+            Gravitational Constant of The Earth
+            <para>地球の地心重力定数[m^3/s^-2]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.IDatum.wE">
+            <summary>
+            Angular Velocity of The Earth
+            <para>地球の角速度[rad/sec]</para>
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Wgs84G873._e">
+            <summary>
+            離心率
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Wgs84G873._e2">
+            <summary>
+            離心率の二乗
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Wgs84G873._b">
+            <summary>
+            短半径
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Wgs84G873._f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.Wgs84G873.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.Wgs84G873.#cctor">
+            <summary>
+            静的メンバ用コンストラクタ
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.PI">
+            <summary>
+            円周率π
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.c">
+            <summary>
+            光速[m/s]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.a">
+            <summary>
+            Equatorial Radius
+            <para>赤道半径（楕円体長半径）[m]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.b">
+            <summary>
+            Short Radius
+            <para>短半径</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.e">
+            <summary>
+            Eccentricity
+            <para>離心率e</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.e2">
+            <summary>
+            Square Eccentricity
+            <para>離心率の二乗</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.InversOblateness">
+            <summary>
+            扁平率の逆数
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.m">
+            <summary>
+            物理的定数その1
+            <para>ω^2a^2b/(GM)またはω^2a/NormalGravityAtEquator</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.NormalGravityAtEquator">
+            <summary>
+            赤道での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.NormalGravityAtPole">
+            <summary>
+            極での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.GM">
+            <summary>
+            Gravitational Constant of The Earth
+            <para>地球の地心重力定数[m^3/s^-2]（大気を含む）</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Wgs84G873.wE">
+            <summary>
+            Angular Velocity of The Earth
+            <para>地球の角速度[rad/sec]</para>
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.Wgs84.#ctor">
+            <summary>
+            Wgs84クラスのコンストラクタ
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.Grs80">
+            <summary>
+            GRS80準拠楕円体の各種パラメータ
+            <para>参考：B. ホフマン-ウェレンホフ/H. モーリッツ　西修二郎訳，物理測地学，シュプリンガー・ジャパン，p.75-81，2006.8．</para>
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Grs80._e">
+            <summary>
+            離心率
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Grs80._e2">
+            <summary>
+            離心率の二乗
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Grs80._b">
+            <summary>
+            短半径
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Grs80._f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.Grs80.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.Grs80.#cctor">
+            <summary>
+            静的メンバ用コンストラクタ
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.PI">
+            <summary>
+            円周率π
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.c">
+            <summary>
+            光速[m/s]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.a">
+            <summary>
+            Equatorial Radius
+            <para>赤道半径（楕円体長半径）[m]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.b">
+            <summary>
+            Short Radius
+            <para>短半径</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.e">
+            <summary>
+            Eccentricity
+            <para>離心率e</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.e2">
+            <summary>
+            Square Eccentricity
+            <para>離心率の二乗</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.InversOblateness">
+            <summary>
+            扁平率の逆数
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.m">
+            <summary>
+            物理的定数その1
+            <para>ω^2a^2b/(GM)またはω^2a/NormalGravityAtEquator</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.NormalGravityAtEquator">
+            <summary>
+            赤道での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.NormalGravityAtPole">
+            <summary>
+            極での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.GM">
+            <summary>
+            Gravitational Constant of The Earth
+            <para>地球の地心重力定数[m^3/s^-2]（大気を含む）</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.Grs80.wE">
+            <summary>
+            Angular Velocity of The Earth
+            <para>地球の角速度[rad/sec]</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GravitationalModel.IGravity">
+            <summary>
+            重力モデルクラスインターフェイス
+            </summary>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.IGravity.GetGravity(System.Double)">
+            <summary>
+            正規重力値を返します
+            </summary>
+            <param name="latitude">緯度[°]<para>単位に注意</para><para>化成緯度でも地心緯度でもない普通の緯度です。</para></param>
+            <returns>重力値[m/s2]<para>単位がGalではないことに注意</para></returns>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.IGravity.GetGravity(System.Double,System.Double)">
+            <summary>
+            重力加速度を返します
+            </summary>
+            <param name="latitude">緯度[°]　単位に注意</param>
+            <param name="ellipsoidHeight">楕円体高[m]</param>
+            <returns>重力値[m/s2]<para>単位がGalではないことに注意</para></returns>
+        </member>
+        <member name="T:Geodesy.GravitationalModel.GravityWgs84">
+            <summary>
+            WGS84における重力モデルクラス
+            <para>使用するパラメータはGeodesy.GeodeticDatum.Wgs84が継承しているパラメータになります。</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GravitationalModel.GravityBase`1">
+            <summary>
+            重力加速度の基底演算クラス
+            </summary>
+            <typeparam name="T">準拠楕円体</typeparam>
+        </member>
+        <member name="F:Geodesy.GravitationalModel.GravityBase`1.datum">
+            <summary>
+            測地系オブジェクト
+            </summary>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.GravityBase`1.GetGravity(System.Double,System.Double)">
+            <summary>
+            緯度と楕円体高に応じた重力加速度を返します
+            <para>
+            正規重力を（楕円体表面での正規化された重力（引力と遠心力の合力））のチェビシェフ近似により計算する。
+            </para>
+            <remarks>
+                高度の影響係数の計算には、（B. ホフマン-ウェレンホフ/H. モーリッツ　西修二郎訳，物理測地学，シュプリンガー・ジャパン，p.73，2006.8）を参考にしました。
+                
+                正規重力の計算式には、測地学会が編集している測地学WEB版 http://www.geod.jpn.org/web-text/part2/2-2/2-2-1-4.html を参考にしました。
+                誤差は0.1 μGalだそうです。
+                一応、国土地理院の http://vldb.gsi.go.jp/sokuchi/gravity/grv_jpn/gr_table.pl?103 と比較して正規重力値に0.01 mGal以内の誤差しかないことを確認済みです。
+            </remarks>
+            </summary>
+            <param name="latitude">緯度[°]<para>単位に注意</para><para>化成緯度でも地心緯度でもない普通の緯度です。</para></param>
+            <param name="ellipsoidHeight">楕円体高[m]</param>
+            <returns>重力値[m/s2]<para>単位がGalではないことに注意</para></returns>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.GravityBase`1.GetGravity(System.Double)">
+            <summary>
+            正規重力値を返します
+            <para>
+            アルゴリズムはGetGravity(double latitude, double ellipsoidHeight)のXML解説をご参照ください。
+            </para>
+            </summary>
+            <param name="latitude">緯度[°]　単位に注意</param>
+            <returns>重力値[m/s2]<para>単位がGalではないことに注意</para></returns>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.GravityBase`1.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.GravityWgs84.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:Geodesy.GravitationalModel.GravityGrs80">
+            <summary>
+            GRS80(Geodetic Reference System 1980：GRS80)における重力モデルクラス
+            </summary>
+        </member>
+        <member name="M:Geodesy.GravitationalModel.GravityGrs80.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:Geodesy.GravitationalModel.Gravity">
+            <summary>
+            重力モデルクラス
+            <para>デフォルトではGRS80モデルを継承しています。</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.Datum">
+            <summary>
+            測地系
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Datum.WGS84">
+            <summary>
+            WGS84測地系
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Datum.GRS80">
+            <summary>
+            GRS80測地系
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.Datum.Unknown">
+            <summary>
+            未知の座標系
+            </summary>
+        </member>
+        <member name="T:Geodesy.Geopotential.GeopotentialAltitude`1">
+            <summary>
+            ジオポテンシャル高度と楕円体高の相互変換クラス
+            interconversion
+            </summary>
+            <typeparam name="T">重力モデル</typeparam>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.gravityModel">
+            <summary>
+            重力モデル
+            </summary>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.minEllipsoidHeight">
+            <summary>
+            heightTableへ格納しているデータの最小楕円体高[m]
+            </summary>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.maxEllipsoidHeight">
+            <summary>
+            heightTableへ格納しているデータの最大楕円体高[m]
+            </summary>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.integralStep">
+            <summary>
+            積分ステップ
+            </summary>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.latitude">
+            <summary>
+            緯度[deg]
+            <para>単位に注意してください。</para>
+            </summary>
+        </member>
+        <member name="F:Geodesy.Geopotential.GeopotentialAltitude`1.heightTable">
+            <summary>
+            ジオポテンシャル高度の計算結果を記憶しておく
+            <para>要求値が楕円体面より下ってこともあり得るので単純な配列やListでは扱いづらい+デバッグがやりにくいので、構造体を使う。</para>
+            </summary>
+        </member>
+        <member name="M:Geodesy.Geopotential.GeopotentialAltitude`1.Init">
+            <summary>
+            heightTableをセットします
+            <para>呼び出す前に、メンバ変数へのセットを済ませておいてください。</para>
+            </summary>
+        </member>
+        <member name="M:Geodesy.Geopotential.GeopotentialAltitude`1.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="latitude">緯度[deg]<para>単位に注意</para><para>化成緯度でも地心緯度でもない普通の緯度です。</para></param>
+            <param name="maxEllipsoidHeight">利用予定の最大楕円体高[m]<para>途中で拡張もされますが、予め利用予定高度をセットしておいた方が高速で動作します。</para></param>
+            <param name="integralStep">積分ステップ</param>
+        </member>
+        <member name="P:Geodesy.Geopotential.GeopotentialAltitude`1.Latitude">
+            <summary>
+            緯度[deg]
+            <para>単位に注意</para>
+            <para>化成緯度でも地心緯度でもない普通の緯度です。</para>
+            <para>異なる値をセットした場合、内部変数を一度リセットしますので若干時間がかかります。</para>
+            </summary>
+        </member>
+        <member name="T:Geodesy.GeodeticDatum.GlobalDatum">
+            <summary>
+            様々な測地系を表現可能なクラス
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.GlobalDatum.datumKind">
+            <summary>
+            測地系の種類
+            </summary>
+        </member>
+        <member name="F:Geodesy.GeodeticDatum.GlobalDatum._datum">
+            <summary>
+            測地系オブジェクト
+            </summary>
+        </member>
+        <member name="M:Geodesy.GeodeticDatum.GlobalDatum.#ctor(Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="datum">測地系の種類</param>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.PI">
+            <summary>
+            円周率π
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.c">
+            <summary>
+            光速[m/s]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.a">
+            <summary>
+            Equatorial Radius
+            <para>赤道半径（楕円体長半径）[m]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.b">
+            <summary>
+            Short Radius
+            <para>短半径</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.e">
+            <summary>
+            Eccentricity
+            <para>離心率e</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.e2">
+            <summary>
+            Square Eccentricity
+            <para>離心率の二乗</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.f">
+            <summary>
+            扁平率
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.InversOblateness">
+            <summary>
+            扁平率の逆数
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.m">
+            <summary>
+            物理的定数その1
+            <para>ω^2a^2b/(GM)またはω^2a/NormalGravityAtEquator</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.NormalGravityAtEquator">
+            <summary>
+            赤道での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.NormalGravityAtPole">
+            <summary>
+            極での正規重力[m/s^2]
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.GM">
+            <summary>
+            Gravitational Constant of The Earth
+            <para>地球の地心重力定数[m^3/s^-2]（大気を含む）</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.wE">
+            <summary>
+            Angular Velocity of The Earth
+            <para>地球の角速度[rad/sec]</para>
+            </summary>
+        </member>
+        <member name="P:Geodesy.GeodeticDatum.GlobalDatum.DatumKind">
+            <summary>
+            測地系の種類
+            </summary>
+        </member>
+    </members>
+</doc>

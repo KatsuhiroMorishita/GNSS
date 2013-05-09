@@ -1,0 +1,1111 @@
+﻿<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GNSS</name>
+    </assembly>
+    <members>
+        <member name="T:GNSS.Blh">
+            <summary>
+            緯度・経度・楕円体高を表す構造体
+            <para>語源はドイツ語らしい。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Blh.b">
+            <summary>
+            緯度
+            </summary>
+        </member>
+        <member name="F:GNSS.Blh.l">
+            <summary>
+            経度
+            </summary>
+        </member>
+        <member name="F:GNSS.Blh.h">
+            <summary>
+            楕円体高[m]
+            </summary>
+        </member>
+        <member name="F:GNSS.Blh._unit">
+            <summary>
+            緯度・経度の単位
+            </summary>
+        </member>
+        <member name="F:GNSS.Blh._datum">
+            <summary>
+            測地系
+            </summary>
+        </member>
+        <member name="M:GNSS.Blh.op_Addition(GNSS.Blh,GNSS.Blh)">
+            <summary>
+            二項+演算子（これで足し算が簡単にできる）
+            <para>単位はdegreeとなる</para>
+            </summary>
+            <param name="c1">被加算値</param>
+            <param name="c2">加算値</param>
+            <returns>2値を加算した結果</returns>
+        </member>
+        <member name="M:GNSS.Blh.op_Subtraction(GNSS.Blh,GNSS.Blh)">
+            <summary>
+            二項-演算子（これで引き算が簡単にできる）
+            <para>単位はdegreeとなる</para>
+            </summary>
+            <param name="c1">被減算値</param>
+            <param name="c2">減算値</param>
+            <returns>2値の引き算の結果</returns>
+        </member>
+        <member name="M:GNSS.Blh.op_Equality(GNSS.Blh,GNSS.Blh)">
+            <summary>
+            比較演算子==
+            <para>単位及び測地系の設定も含めて一致しなければtrueとはしません。</para>
+            </summary>
+            <param name="c1">比較対象その1</param>
+            <param name="c2">比較対象その2</param>
+            <returns>等しければture</returns>
+        </member>
+        <member name="M:GNSS.Blh.op_Inequality(GNSS.Blh,GNSS.Blh)">
+            <summary>
+            比較演算子!=
+            </summary>
+            <param name="c1">比較対象その1</param>
+            <param name="c2">比較対象その2</param>
+            <returns>等しくなければture</returns>
+        </member>
+        <member name="M:GNSS.Blh.GetHashCode">
+            <summary>
+            ハッシュ値を返す
+            </summary>
+            <returns>全メンバのXOR結果</returns>
+        </member>
+        <member name="M:GNSS.Blh.Equals(System.Object)">
+            <summary>
+            objと自分自身が等価のときはtrueを返す
+            </summary>
+            <param name="obj">比較したいオブジェクト</param>
+            <returns>等価であればtrue</returns>
+        </member>
+        <member name="M:GNSS.Blh.ToDegree">
+            <summary>
+            単位を度へ変換したオブジェクトを返す
+            </summary>
+        </member>
+        <member name="M:GNSS.Blh.ToRadian">
+            <summary>
+            単位をラジアン単位へ変換したオブジェクトを返す
+            </summary>
+        </member>
+        <member name="M:GNSS.Blh.GetUnitLengthForEN">
+            <summary>
+            楕円体に沿った、東西方向の単位長[m/deg]を返す
+            <para>実際は高度の分だけ若干の誤差が発生するし、2地点の高度差は考慮しない。</para>
+            <para>参考：理科年表，p.563，2003．</para>
+            <para>ちなみに、http://yamadarake.web.fc2.com/trdi/2009/report000001.html　を見ると使用した公式がヒュベニの公式と言うものであることが分かる</para>
+            </summary>
+            <returns>楕円体に沿った、東西方向の単位長[m/deg]</returns>
+        </member>
+        <member name="M:GNSS.Blh.ChangeToDegree">
+            <summary>
+            自身の単位を度へ変換する
+            </summary>
+            
+        </member>
+        <member name="M:GNSS.Blh.ChangeToRadian">
+            <summary>
+            自身の単位をラジアン単位へ変換する
+            </summary>
+        </member>
+        <member name="M:GNSS.Blh.GetMedian(GNSS.Blh)">
+            <summary>
+            2地点間の中間座標を返す
+            <para>（現時点では）メルカトル図法上の中間点を算出します。従って極点をまたがるような2点間の中点を求める用途には向いていません。</para>
+            <para>また、2地点間の中間地点は地球上に2点取り得ますが、2点間を結ぶ距離が短くなる方を採用しています。</para>
+            </summary>
+            <param name="pos">第2の座標</param>
+            <returns>
+            本インスタンスと第2の座標間の中間座標
+            <para>新しく生成する座標の単位と測地系は本オブジェクトに合わせます。</para>
+            </returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance(GNSS.Blh)">
+            <summary>
+            距離演算その1
+            <para>ヒュベニの公式を利用して、引数で指定された座標までの距離[m]を返します。</para>
+            <para>GetDistance2()と比較して、40 km差で0.01 m以下の差が生じます。</para>
+            <para>最短距離を求めているわけではないことに注意してください。</para>
+            <para>なお、高度は無視して楕円体面上での距離を求めています。</para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>南北・東西方向の距離[m]を構造体で返す</returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance2(GNSS.Blh)">
+            <summary>
+            距離演算その2
+            <para>
+            <para>引数で指定された座標までの距離[m]を返します。</para>
+            参考：http://homepage3.nifty.com/kubota01/distance.htm
+            距離が50kmを超えるようなら、こちらのメソッドの使用を推奨します。
+            ただし、数百km以上であればその5またはその6の使用を推奨します。
+            <para>なお、高度は無視して楕円体面上での距離を求めています。</para>
+            </para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>距離</returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance3(GNSS.Blh)">
+            <summary>
+            距離演算その3
+            <para>ヒュベニの公式を利用しているGetDistance()を用いて、楕円体面上の距離[m]を求めます。</para>
+            <para>精度は実距離100 km当たり、1 m程度です。</para>
+            <para>なお、高度は無視して楕円体面上での距離を求めています。</para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>距離</returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance4(GNSS.Blh)">
+            <summary>
+            距離演算その4
+            <para>
+            2点をXYZ座標へ変換して、そのベクトルの差分のノルムを取る（== 直線距離[m]）という処理を行います。
+            40 kmでその2に対して0.1 m以下の差を生じる。
+            地表における距離10 km以下であれば実用上は問題はないと考えられる。
+            演算の速さが取り柄です。
+            標高も演算に使われます。
+            また、標高が高い（高度数十km）地点での短距離はこのメソッドの方がその2や3よりも精度上優位でしょう。
+            </para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>距離</returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance5(GNSS.Blh)">
+            <summary>
+            距離演算その5
+            <para>Lambert-Andoyerの式を用いて引数で指定された座標までの距離[m]を返します。</para>
+            <para>10 m程度の距離で0.2 mm程度の誤差を生じます。数百km以上の長距離になると誤差は少なめです。</para>
+            <para>距離演算その6と比較して、10 m程のごく短距離において、0.01 pm（ピコメートル）の差が生じました。また、通常距離では差は生じませんでした。</para>
+            <para>参考文献</para>
+            <para>[1] 河合，測地線航海算法，富山高専　航海科学研究室，http://www.toyama-cmt.ac.jp/~mkawai/lecture/sailing/geodetic/geosail.html#note1 ，2012/6．</para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>測地線長<para>未知の測地系の場合、非値を返します。</para></returns>
+        </member>
+        <member name="M:GNSS.Blh.GetDistance6(GNSS.Blh)">
+            <summary>
+            距離演算その6
+            <para>Lambert-Andoyerの式を変形した小野の公式を用い引数で指定された座標までの距離[m]を返します。</para>
+            <para>参考文献</para>
+            <para>[1] 河合，測地線航海算法，富山高専　航海科学研究室，http://www.toyama-cmt.ac.jp/~mkawai/lecture/sailing/geodetic/geosail.html#note1 ，2012/6．</para>
+            <para></para>
+            </summary>
+            <param name="pos">求めたい地点の座標</param>
+            <returns>測地線長<para>未知の測地系の場合、非値を返します。</para></returns>
+        </member>
+        <member name="M:GNSS.Blh.ToXYZ(Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            XYZ座標系へ変換したオブジェクトを返す
+            <para>参考文献</para>
+            <para>[1]理科年表，p.563，2003．</para>
+            <para>[2]坂井，GPSのための実用プログラミング，東京電機大学出版局，pp.28-29，2007/7．</para>
+            <para>[3]測位航法学会　訳，精説GPS　第二版，p.126，2010/4．</para>
+            <para>[4]杉本・柴崎，GPSハンドブック，朝倉書店，p.23 and pp.415-416，2010/9．</para>
+            <para>[5]西修二郎訳，物理測地学，シュプリンガー・ジャパン，pp.177-179，2006/8．</para>
+            <para>[6]西修二郎訳，GPS理論と応用，シュプリンガー・ジャパン，pp.319-320，2009/3．</para>
+            </summary>
+            <param name="nextDatum">変換後の測地系（2012/6/5時点では基準測地系の変換には未対応）</param>
+            <returns>変換したXYZ座標</returns>
+        </member>
+        <member name="M:GNSS.Blh.ToXYZ">
+            <summary>
+            XYZ座標系へ変換したオブジェクトを返す
+            <para>引数を省略できます。変換後の測地系は本オブジェクトの測地系と同じになります。</para>
+            <para>ToXYZ(Datum nextDatum)を利用して値を返します。</para>
+            </summary>
+            <returns>変換したXYZ座標</returns>
+        </member>
+        <member name="M:GNSS.Blh.ToString">
+            <summary>
+            緯度・経度・楕円体高の文字列化
+            Excelに合わせて、経度から先に出力する。
+            </summary>
+            <returns>文字列化した位置座標</returns>
+        </member>
+        <member name="M:GNSS.Blh.FilterAsLatitudeAndLongitude(System.Double@,System.Double@,GNSS.AngleUnit)">
+            <summary>
+            緯度と経度にフィルタをかける
+            <para>緯度は-90～90 degの範囲とする。経度は-180～180 degの範囲とする。</para>
+            <example>
+            <code>
+            double lat = 125.3, lon = -186.36;      // 極を挟んで向こう側に行って、さらに地球を半周以上している
+            GNSS.Blh.FilterAsLatitudeAndLongitude(ref lat, ref lon, GNSS.AngleUnit.Degree);
+            </code>
+            </example>
+            </summary>
+            <param name="lat">緯度</param>
+            <param name="lon">経度</param>
+            <param name="unit">単位</param>
+        </member>
+        <member name="M:GNSS.Blh.FilterAsLongitude(System.Double@,GNSS.AngleUnit)">
+            <summary>
+            経度にフィルタをかける
+            <para>経度は-180～180 degの範囲とする。</para>
+            <example>
+            <code>
+            double lon = -186.36;                   // 地球を半周以上している
+            GNSS.Blh.FilterAsLongitude(ref lon, GNSS.AngleUnit.Degree);
+            </code>
+            </example>
+            </summary>
+            <param name="lon">経度</param>
+            <param name="unit">単位</param>
+        </member>
+        <member name="M:GNSS.Blh.#ctor(System.Double,System.Double,System.Double,GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            Blhのコンストラクタ
+            <para>引数は省略可能です。</para>
+            </summary>
+            <param name="B">緯度: Latitude</param>
+            <param name="L">経度: Longitude</param>
+            <param name="H">高度: Ellipsoidal altitude</param>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系<para>省略するとWGS84となる。</para></param>
+        </member>
+        <member name="M:GNSS.Blh.#ctor(System.String,System.String,System.String,GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            Blhを文字列で初期化するコンストラクタ
+            <para>引数は省略可能です。</para>
+            </summary>
+            <param name="B">緯度: Latitude</param>
+            <param name="L">経度: Longitude</param>
+            <param name="H">高度: Ellipsoidal altitude</param>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系<para>省略するとWGS84となる。</para></param>
+        </member>
+        <member name="P:GNSS.Blh.B">
+            <summary>
+            緯度
+            <para>緯度は-90～90 degの範囲に丸められます。</para>
+            <para>もしセットした値の絶対値が90°を超えている場合、極の向こう側へ移動したとみなして経度が自動的に半周します。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Blh.L">
+            <summary>
+            経度
+            <para>経度は-180～180 degの範囲に丸められます。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Blh.H">
+            <summary>
+            楕円体高
+            <para>楕円体表面からの鉛直距離</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Blh.Unit">
+            <summary>
+            演算単位
+            <para>deg or radian</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Blh.DatumKind">
+            <summary>
+            測地系
+            <para>測地系の変更に対しての処理は未実装</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Blh.Healthy">
+            <summary>
+            本オブジェクトの状態を表す
+            <para>true: 正常, 利用可能</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.Field.RectangleField">
+            <summary>
+            緯度経度により表現する長方形領域（緯度経度座標系では長方形ですがxyz座標系では台形のような曲面となります）
+            <para>例えば、GPSのログ領域の広さやマップの広さを表すことができる。</para>
+            <para>経度180°をまたぐ様な領域は表現できますが、極をまたぐ領域や東西南北に対して斜めに張るような領域は表現できません。</para>
+            <para>
+            2012/5/14時点では、インスタンス生成後に単位と測地系を変更することはできない。
+            途中での変更を可能にするには、UpperRightとUnderLeftを取得してこれをBlh構造体の機能で変換後、paramへパラメータ再格納という手順を踏む必要がある。
+            従ってまずはBlh構造体の拡張を進める必要がある。
+            </para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.RectangleField.param">
+            <summary>
+            パラメータ
+            </summary>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.ToString">
+            <summary>
+            領域情報を文字列として返す
+            <para>左上の座標と、右下の座標をカンマ区切りで返します。</para>
+            </summary>
+            <returns>領域情報</returns>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.IsContain(GNSS.Field.RectangleField)">
+            <summary>
+            領域の比較を行い、本オブジェクトが引数で渡したオブジェクトを含むかどうかチェックします
+            <para>比較は、一部の領域ではなく完全に含むかどうかを判定します。</para>
+            </summary>
+            <param name="comparativeField">比較対象のオブジェクト</param>
+            <returns>true: 含む</returns>
+            <exception cref="T:System.ArgumentException">引数のインスタンスが確保されていない場合にスロー</exception>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.Extend(System.Double)">
+            <summary>
+            領域を指定マージン[km]にて拡張した領域を返します
+            <para>非破壊的メソッド</para>
+            <para>経度方向は高緯度に合わせ、緯度方向は低緯度に合わせて拡張します。</para>
+            </summary>
+            <param name="marginKm">マージン[km]<para>負値の場合は処理を行いません。</para></param>
+            <returns>拡張済みのオブジェクト<para>引数のmarginが負値の場合はnullを返します。</para></returns>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.ToArray">
+            <summary>
+            領域をBlh型の配列として返す
+            <para>格納の順番はKMLのポリゴンで四角く描かれる順番にしています。</para>
+            </summary>
+            <returns>領域の四隅をBlh型の配列に加工したもの</returns>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.SetLatAndEastWestLon(GNSS.Blh,GNSS.Field.FieldParameter@)">
+            <summary>
+            緯度経度を更新する
+            </summary>
+            <param name="additionalPos">追加座標</param>
+            <param name="param">領域パラメータ</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.Set(GNSS.Blh)">
+            <summary>
+            座標をセットする
+            <para>自動的に過去の履歴と比較されて領域が拡張されます。</para>
+            </summary>
+            <param name="pos">セットする座標</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.Set(GNSS.Blh[])">
+            <summary>
+            座標の配列から領域を生成する
+            <para>自動的に過去の履歴と比較されて領域が拡張されます。</para>
+            </summary>
+            <param name="pos">セットする座標</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.#ctor(GNSS.Blh,System.Double)">
+            <summary>
+            コンストラクタ
+            <para>中心座標と半径[km]を指定すると、その円を格納できる四角い領域を宣言します。</para>
+            </summary>
+            <param name="x">中心座標</param>
+            <param name="radius">半径[km]</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.#ctor(GNSS.Blh,GNSS.Blh,GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            コンストラクタ
+            <para>2つの座標を指定すると、大小関係からマップの座標を自動的に決定する。</para>
+            <para>経度に関しては、より小さな領域となる座標を選択する。</para>
+            </summary>
+            <param name="x1">座標1</param>
+            <param name="x2">座標2</param>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.#ctor(GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            座標省略時のコンストラクタ
+            <para>内部パラメータには非値が代入され、使用準備は完了しますが値をセットしない限り運用できません。</para>
+            </summary>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系</param>
+        </member>
+        <member name="M:GNSS.Field.RectangleField.#ctor(GNSS.Field.RectangleField)">
+            <summary>
+            コピーコンストラクタ
+            </summary>
+            <param name="field">コピー元のインスタンス</param>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.UpperRight">
+            <summary>
+            右上の座標
+            <example>
+            <code>
+            RectangleField field = new RectangleField(利用可能になる初期化);
+            Blh hoge;
+            if (field.Available) hoge = (Blh)filed.UpperRight;
+            </code>
+            </example>
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.UpperLeft">
+            <summary>
+            左上の座標
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.LowerRight">
+            <summary>
+            右下の座標
+            <para>定義できない場合はnullを返します。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.LowerLeft">
+            <summary>
+            左下の座標
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.Center">
+            <summary>
+            中央の座標
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.AreaIsZero">
+            <summary>
+            面積が存在するかを返す
+            <para>true: 面積は0。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.DifferInLat">
+            <summary>
+            緯度差
+            <para>南北方向の領域における緯度の差</para>
+            <para>定義不可能な場合はNaNとなります。</para>
+            <para>単位は本フィールドの定義に基づきます。単位にお気を付け下さい。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.DifferInLon">
+            <summary>
+            経度差
+            <para>東西方向の領域における経度の差</para>
+            <para>定義不可能な場合はNaNとなります。</para>
+            <para>単位は本フィールドの定義に基づきます。単位にお気を付け下さい。</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.Field.RectangleField.Size">
+            <summary>
+            サイズ
+            <para>領域のサイズ（緯度経度長）を返します。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.GGA">
+            <summary>
+            GGAのみを扱うクラス
+            <para>未完成</para>
+            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
+            <para>南緯と西経は負数で表します。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.GGA.regexMatch">
+            <summary>
+            GGAセンテンスにマッチさせる正規表現
+            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.GGA.regexGroup">
+            <summary>
+            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
+            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.CheckMatch(System.String)">
+            <summary>
+            文字列を検査してセンテンスにマッチするかどうかを確認する
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果<para>true: ヒット</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.FindAll(System.String)">
+            <summary>
+            検査文字列の中にあるマッチするものをすべて抽出する
+            <para>Pythonのfindallを参考にした。</para>
+            <para>テスト未実施</para>
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.Selftest">
+            <summary>
+            セルフテスト
+            <para>
+            本クラスのテストを実施する。
+            未実装。
+            返り値はHealthyかUnhealthyにするか、各メソッドへの入力と返り値を並べたstringとするか。。。</para>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.Parse(System.String)">
+            <summary>
+            GGAを解析して、測位情報を返す
+            <para>現時点では緯度と経度と楕円体高しか返していないんだけど・・・</para>
+            </summary>
+            <param name="str">解析文字列</param>
+            <returns></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.#cctor">
+            <summary>
+            スタティックコンストラクタ
+            <para>メンバの初期化を行います。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.AngleUnit">
+            <summary>角度の単位</summary>
+        </member>
+        <member name="F:GNSS.AngleUnit.Degree">
+            <summary>度</summary>
+        </member>
+        <member name="F:GNSS.AngleUnit.Radian">
+            <summary>ラジアン</summary>
+        </member>
+        <member name="T:GNSS.TextData.SDF.SdfReader">
+            <summary>
+            SDFフォーマットのログデータを読み込む簡易クラス
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.SDF.SdfReader.regexMatch">
+            <summary>
+            sdfセンテンスにマッチさせる正規表現
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.SDF.SdfReader.regexGroup">
+            <summary>
+            sdfセンテンスにマッチさせて、内部の値をグループ化する正規表現
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.SDF.SdfReader.Parse(System.String)">
+            <summary>
+            文字列を解析して、そこに含まれる1エポック分の測位情報を返す
+            </summary>
+            <param name="line">被解析文字列</param>
+            <returns>測位情報の解析データ<para>null: 解析不可能であった場合</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.SDF.SdfReader.GetPositioningResults(System.String)">
+            <summary>
+            指定ファイルに含まれる測位情報を返す
+            </summary>
+            <returns>測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.TextData.SDF.SdfReader.IsSdf(System.String)">
+            <summary>
+            渡された文字列にsdfフォーマットセンテンスが含まれるかどうかを返す
+            </summary>
+            <param name="txt">検査文字列</param>
+            <returns>検査結果<para>true: sdfセンテンスです</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.SDF.SdfReader.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:GNSS.Length">
+            <summary>
+            南北、東西方向の距離・長さを収めるための構造体
+            </summary>
+        </member>
+        <member name="F:GNSS.Length.E">
+            <summary>東西方向の長さ</summary>
+        </member>
+        <member name="F:GNSS.Length.N">
+            <summary>南北方向の長さ</summary>
+        </member>
+        <member name="M:GNSS.Length.ToString">
+            <summary>
+            文字列化して返す
+            <para>デリミタにはカンマを使います。</para>
+            <para>格納は、経度方向,緯度方向の順です。</para>
+            </summary>
+            <returns>カンマ区切りで文字列化した情報</returns>
+        </member>
+        <member name="M:GNSS.Length.#ctor(System.Double,System.Double)">
+            <summary>
+            構造体初期化
+            </summary>
+            <param name="_E">経度方向の長さ</param>
+            <param name="_N">緯度方向の長さ</param>
+        </member>
+        <member name="T:GNSS.Ecef">
+            <summary>
+            ECEF座標系
+            </summary>
+        </member>
+        <member name="F:GNSS.Ecef.x">
+            <summary>
+            x座標[m]
+            </summary>
+        </member>
+        <member name="F:GNSS.Ecef.y">
+            <summary>
+            y座標[m]
+            </summary>
+        </member>
+        <member name="F:GNSS.Ecef.z">
+            <summary>
+            z座標[m]
+            </summary>
+        </member>
+        <member name="M:GNSS.Ecef.op_Addition(GNSS.Ecef,GNSS.Ecef)">
+            <summary>
+            二項+演算子（これで足し算が簡単にできる）
+            </summary>
+            <param name="c1">被加算値</param>
+            <param name="c2">加算値</param>
+            <returns>2値を加算した結果</returns>
+        </member>
+        <member name="M:GNSS.Ecef.op_Subtraction(GNSS.Ecef,GNSS.Ecef)">
+            <summary>
+            二項-演算子（これで足し算が簡単にできる）
+            </summary>
+            <param name="c1">被減算値</param>
+            <param name="c2">減算値</param>
+            <returns>2値の引き算の結果</returns>
+        </member>
+        <member name="M:GNSS.Ecef.ToBLH(Geodesy.GeodeticDatum.Datum)">
+            <summary>
+            XYZからBlh座標系（緯度・経度・楕円体高[m]）へ変換する
+            </summary>
+            <param name="datum">変換後の測地系</param>
+            <returns>Blhに変換した結果</returns>
+        </member>
+        <member name="M:GNSS.Ecef.ToString">
+            <summary>
+            メンバを文字列化して返す
+            </summary>
+            <returns>メンバ変数x,y,zを文字列化したしたstring型変数</returns>
+        </member>
+        <member name="M:GNSS.Ecef.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            XYZ構造体のコンストラクタ
+            <para>引数は省略可能です。</para>
+            </summary>
+            <param name="x">x成分</param>
+            <param name="y">y成分</param>
+            <param name="z">z成分</param>
+        </member>
+        <member name="M:GNSS.Ecef.#ctor(System.String,System.String,System.String)">
+            <summary>
+            XYZを文字列で初期化するコンストラクタ
+            <para>引数は省略可能です。</para>
+            </summary>
+            <param name="x">x成分</param>
+            <param name="y">y成分</param>
+            <param name="z">z成分</param>
+        </member>
+        <member name="P:GNSS.Ecef.Norm">
+            <summary>
+            ノルム（ベクトル長）
+            </summary>
+        </member>
+        <member name="T:GNSS.PositioningInfos">
+            <summary>
+            時系列の測位情報クラス
+            </summary>
+        </member>
+        <member name="F:GNSS.PositioningInfos.data">
+            <summary>
+            測位情報
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfos.Add(GNSS.PositioningInfo)">
+            <summary>
+            測位情報を追加する
+            </summary>
+            <param name="posInfo">測位情報</param>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetPositions">
+            <summary>
+            測位座標情報をコピーする
+            </summary>
+            <returns>測位座標情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetTimes">
+            <summary>
+            時刻情報をコピーしてくれる専用メソッド
+            </summary>
+            <returns>時刻情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetData">
+            <summary>
+            観測情報を配列に加工して返す
+            </summary>
+            <returns>観測情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.ToString">
+            <summary>
+            データ内容をstring型にして返す
+            データには、時刻・経度・緯度・高度が含まれます。
+            </summary>
+            <returns>文字列化した測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.SaveFileAsNormal(System.String)">
+            <summary>
+            指定ファイル名でデータを保存する
+            KMLに加工するメソッドもその内作りたいなぁ。
+            </summary>
+            <param name="fname">ファイル名</param>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetRectangleField">
+            <summary>
+            ログを全走査し、2つ以上のログが存在した場合に、ログを覆う長方形領域を返す
+            </summary>
+            <returns>
+            領域情報またはnull
+            <para>領域を構成できない場合はnullを返します。</para>
+            </returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfos.Finalize">
+            <summary>
+            デスコンストラクタ
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfos.Length">
+            <summary>
+            保持しているデータ数
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.NmeaReader">
+            <summary>
+            NMEAパーサー
+            <para>NMEAのログを解析して、解析結果を返します。</para>
+            <para>
+            2011/7/17作りかけ
+            突貫で作ったので設計思想が固まっているわけでもない。
+            現時点では、ログを一旦全て読み込んでいるのでメモリ量がかなり必要となっている。
+            処理にも若干時間がかかる。
+            開発時間を優先した。
+            </para>
+            <para>
+            今後は、NMEAパーサが必要とされるなら、“object型でGGAクラスを返す”などの動作を実装する予定。
+            受け側では、以下の様にして呼び出す。
+            <code>
+            string nmea_str = "$GPGGA,*******";
+            GPS.NMEA nmea_parser = new GPS.NMEA();
+            object hoge;
+            
+            hoge = nmea_parser.parse(nmea_str);         // NMEAフォーマットの文字列を処理して、オブジェクトを返してもらう。
+            if(hoge.GetType() == tyepof(GPS.NMEA))      // オブジェクトの型をチェックし、任意の型と一致した場合に所望の処理を呼び出す。
+            {
+                // たとえば、こんな感じか？
+                int sat = hoge.sat;
+            }
+            </code>
+            NMEAパーサとして想定される使用環境
+            1) ログを処理する（センテンス毎・1エポック毎）
+            2) リアルタイムで処理する（センテンス毎に処理）
+            </para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.text">
+            <summary>
+            読み込んだテキストファイルを格納するstring変数
+            <para>バイナリデータには非対応</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.isOpenStatus">
+            <summary>
+            Streamでファイルを開いているかどうかを示す
+            <para>ファイルが開けていればture</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.fs">
+            <summary>
+            ファイル読み込みに使用するストリームオブジェクト
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.reader">
+            <summary>
+            ファイルをバイナリで読み込むためのオブジェクト
+            <para>ログのサイズが大きすぎて危険な場合はこちらでちょっとずづ読み込むようにする（予定）</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.errormsg">
+            <summary>
+            エラーメッセージ
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.fname">
+            <summary>
+            オープンしたファイル名
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Close">
+            <summary>
+            ファイルを閉じる
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Dispose">
+            <summary>
+            リソースを開放します
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Open(System.String)">
+            <summary>
+            指定されたファイルを開く
+            <para>開いた後は、メモリ上に全展開となる。</para>
+            <para>現時点ではデータ内にバイナリが入っているとエラーとなる。</para>
+            </summary>
+            <param name="fname">ファイル名</param>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenWithDialog">
+            <summary>
+            ダイアログを用いてNMEA形式のログファイルを開く
+            <para>ファイルのOpenに成功したかどうかを返します。</para>
+            </summary>
+            <returns>true: ファイルを開くことができています</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenStream(System.String)">
+            <summary>
+            ストリームを使用してファイルを開く
+            <para>巨大なログファイルを処理する際に使用する。</para>
+            <para>ストリームを使用した処理に関しては未実装です。</para>
+            </summary>
+            <param name="fname"></param>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.IsNmea(System.String)">
+            <summary>
+            渡された文字列がNMEAセンテンスを含んでいるかを返す
+            <para>2012/8/9時点では、GGAとZDAのみを対象とした処理を行います。</para>
+            </summary>
+            <param name="txt">検査文字列</param>
+            <returns>検査結果, true: NMEAセンテンスを含んでいる</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositions">
+            <summary>
+            GGAから緯度・経度を配列で取得する
+            </summary>
+            <returns>座標を表すBlh構造体の配列</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetTimes">
+            <summary>
+            GGAからUTCの秒単位の時刻を配列で得る
+            <para>日付の経過などは考慮していない。</para>
+            </summary>
+            <returns>時刻を秒単位に変換したものの配列</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositioningResults">
+            <summary>
+            GPGGAをトリガにして、タイミングごとにまとめた測位情報を返す
+            <para>NMEAはセンテンスの出力順序を規定していないので、もしかすると時刻と測位位置がずれるかもしれない。</para>
+            </summary>
+            <returns>測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetDateTimes">
+            <summary>
+            ZDAから時刻データ列のみを取得する
+            GGAのトリガはないのでGetPositioningResults()とは時刻がずれる可能性がある。
+            日付も考慮してみる。
+            </summary>
+            <returns>測位情報履歴に含まれる時刻情報を配列にしたもの</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Finalize">
+            <summary>
+            デスコンストラクタ
+            <para>インスタンスの廃棄時に呼び出されるメソッド</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.TextData.NMEA.NmeaReader.IsOpen">
+            <summary>
+            バッファ上に読み込み済みならtrueとなる。
+            2011/7/20　時点では、streamに関しては関知しない。
+            </summary>
+        </member>
+        <member name="P:GNSS.TextData.NMEA.NmeaReader.FileName">
+            <summary>
+            オープンしたファイル名
+            </summary>
+        </member>
+        <member name="T:GNSS.GnssTest">
+            <summary>
+            GNSS名前空間に属するクラス群をテストする静的クラス
+            </summary>
+        </member>
+        <member name="M:GNSS.GnssTest.TwoBlhToDistanceTest">
+            <summary>
+            2地点間の距離を求めるテスト
+            <para>コンソールアプリでの利用を前提としています。</para>
+            <para>ソースコードのコメントにおける、Google Earthの数字はver. 6.1.0.5001にて確認したものです。</para>
+            <para>Google Earthとの差は、計算アルゴリズム若しくは測地系に起因するものと考えられます。（未チェック）</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.GnssTest.ReadNmeaToRectangleFeild">
+            <summary>
+            NMEA読み出し機能およびRectangleFieldクラスのテスト
+            <para>ダイアログを利用してNMEAファイルを開きます。</para>
+            <para>NMEA読み取り後に、測位結果を配列化して測位結果全体が収まるRectangleFieldオブジェクトを生成します。</para>
+            <para>未測位データは除いています。</para>
+            </summary>
+            <returns>測位データ全体を覆う長方形領域情報</returns>
+        </member>
+        <member name="T:GNSS.PositioningInfo">
+            <summary>
+            観測データを取り扱うクラス
+            <para>時刻と座標をセットとして取り扱う</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfo.ToString">
+            <summary>
+            データ内容をstring型にして返す
+            <para>データには、時刻・経度・緯度・楕円体高度が含まれます。</para>
+            <para>改行コードは含まれません。</para>
+            </summary>
+            <returns>文字列化した測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfo.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfo.Finalize">
+            <summary>
+            デスコンストラクタ
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfo.Time">
+            <summary>
+            測位時刻（エポック）
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfo.Position">
+            <summary>
+            測位座標
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.ZDA">
+            <summary>
+            ZDAのみを扱うクラス
+            <para>未完成</para>
+            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.ZDA.regexMatch">
+            <summary>
+            ZDAセンテンスにマッチさせる正規表現
+            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.ZDA.regexGroup">
+            <summary>
+            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
+            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.CheckMatch(System.String)">
+            <summary>
+            文字列を検査してセンテンスにマッチするかどうかを確認する
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果<para>true: ヒット</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.FindAll(System.String)">
+            <summary>
+            検査文字列の中にあるマッチするものをすべて抽出する
+            <para>Pythonのfindallを参考にした。</para>
+            <para>テスト未実施</para>
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.Parse(System.String)">
+            <summary>
+            ZDAを解析して、測位時刻を返す
+            <para>正規表現を利用したマッチをかけているので文字列処理でエラーが生じるとは思えませんが、エラー対策をかませています。</para>
+            </summary>
+            <param name="str">解析文字列</param>
+            <returns>時刻（UTC）</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.#cctor">
+            <summary>
+            スタティックコンストラクタ
+            <para>メンバの初期化を行います。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.Field.FieldParameter">
+            <summary>
+            長方形領域を表すRectangleFieldクラスのパラメータ
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.upperLat">
+            パラメータ *******************************************************************
+            <summary>
+            北限の緯度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.lowerLat">
+            <summary>
+            南限の緯度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.eastLon">
+            <summary>
+            東端の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.westLon">
+            <summary>
+            西端の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.centerLon">
+            <summary>
+            中央の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.unit">
+            <summary>
+            緯度・経度の単位
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.datum">
+            <summary>
+            測地系
+            </summary>
+        </member>
+        <member name="M:GNSS.Field.FieldParameter.#ctor(GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            メソッド *******************************************************************
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系</param>
+        </member>
+        <member name="P:GNSS.Field.FieldParameter.AreaIsZero">
+            プロパティ *******************************************************************
+            <summary>
+            面積が存在するかを返す
+            <para>true: 面積は0。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.Field.FieldKind">
+            <summary>
+            領域の表し方を規定する列挙体
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Rectangle">
+            <summary>
+            長方形の領域
+            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Circlle">
+            <summary>
+            円形領域
+            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.RectangularParallelepiped">
+            <summary>
+            直方体
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Shere">
+            <summary>
+            球状領域
+            </summary>
+        </member>
+    </members>
+</doc>

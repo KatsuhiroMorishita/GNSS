@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{82D3C163-1C38-41BF-8507-E9FD85277827}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GNSS</RootNamespace>
+    <AssemblyName>GNSS</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\GNSS.XML</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Release\GNSS.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AngleUnit.cs" />
+    <Compile Include="Blh.cs" />
+    <Compile Include="Orbit\Ephemeris.cs" />
+    <Compile Include="Field\FieldKind.cs" />
+    <Compile Include="Field\FieldParameter.cs" />
+    <Compile Include="TextData\NMEA\GGA.cs" />
+    <Compile Include="TextData\NMEA\NmeaReader.cs" />
+    <Compile Include="PositioningInfo.cs" />
+    <Compile Include="PositioningInfos.cs" />
+    <Compile Include="TextData\NMEA\ZDA.cs" />
+    <Compile Include="Length.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Field\RectangleField.cs" />
+    <Compile Include="GnssTest.cs" />
+    <Compile Include="TextData\RINEX\NavigationDataReader.cs" />
+    <Compile Include="TextData\RINEX\PreciseEphemerisReader.cs" />
+    <Compile Include="TextData\SDF\SdfReader.cs" />
+    <Compile Include="Ecef.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ObservationNetwork\GEONET\" />
+    <Folder Include="Satellite\Beidou\" />
+    <Folder Include="Satellite\GALILEO\" />
+    <Folder Include="Satellite\GLONASS\" />
+    <Folder Include="Satellite\GPS\" />
+    <Folder Include="Satellite\IRNSS\" />
+    <Folder Include="Satellite\QZSS\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextData\NMEA\readme.txt" />
+    <Content Include="readme.txt" />
+    <Content Include="history.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Geodesy\Geodesy.csproj">
+      <Project>{B9657BE0-8E3A-4485-A863-3F4D955BAD85}</Project>
+      <Name>Geodesy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
