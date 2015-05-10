@@ -35,6 +35,10 @@
     <DocumentationFile>bin\Release\GNSS.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Geodesy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Geodesy.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -77,12 +81,6 @@
     <Content Include="TextData\NMEA\readme.txt" />
     <Content Include="readme.txt" />
     <Content Include="history.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Geodesy\Geodesy.csproj">
-      <Project>{B9657BE0-8E3A-4485-A863-3F4D955BAD85}</Project>
-      <Name>Geodesy</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

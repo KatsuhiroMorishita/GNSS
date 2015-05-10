@@ -4,6 +4,15 @@
         <name>GNSS</name>
     </assembly>
     <members>
+        <member name="T:GNSS.AngleUnit">
+            <summary>角度の単位</summary>
+        </member>
+        <member name="F:GNSS.AngleUnit.Degree">
+            <summary>度</summary>
+        </member>
+        <member name="F:GNSS.AngleUnit.Radian">
+            <summary>ラジアン</summary>
+        </member>
         <member name="T:GNSS.Blh">
             <summary>
             緯度・経度・楕円体高を表す構造体
@@ -315,6 +324,491 @@
             <para>true: 正常, 利用可能</para>
             </summary>
         </member>
+        <member name="T:GNSS.Field.FieldKind">
+            <summary>
+            領域の表し方を規定する列挙体
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Rectangle">
+            <summary>
+            長方形の領域
+            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Circlle">
+            <summary>
+            円形領域
+            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.RectangularParallelepiped">
+            <summary>
+            直方体
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldKind.Shere">
+            <summary>
+            球状領域
+            </summary>
+        </member>
+        <member name="T:GNSS.Field.FieldParameter">
+            <summary>
+            長方形領域を表すRectangleFieldクラスのパラメータ
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.upperLat">
+            パラメータ *******************************************************************
+            <summary>
+            北限の緯度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.lowerLat">
+            <summary>
+            南限の緯度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.eastLon">
+            <summary>
+            東端の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.westLon">
+            <summary>
+            西端の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.centerLon">
+            <summary>
+            中央の経度
+            <para>未定義ではNaNを取ります。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.unit">
+            <summary>
+            緯度・経度の単位
+            </summary>
+        </member>
+        <member name="F:GNSS.Field.FieldParameter.datum">
+            <summary>
+            測地系
+            </summary>
+        </member>
+        <member name="M:GNSS.Field.FieldParameter.#ctor(GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
+            メソッド *******************************************************************
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="unit">単位(°or rad)</param>
+            <param name="datum">測地系</param>
+        </member>
+        <member name="P:GNSS.Field.FieldParameter.AreaIsZero">
+            プロパティ *******************************************************************
+            <summary>
+            面積が存在するかを返す
+            <para>true: 面積は0。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.GGA">
+            <summary>
+            GGAのみを扱うクラス
+            <para>未完成</para>
+            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
+            <para>南緯と西経は負数で表します。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.GGA.regexMatch">
+            <summary>
+            GGAセンテンスにマッチさせる正規表現
+            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.GGA.regexGroup">
+            <summary>
+            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
+            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.CheckMatch(System.String)">
+            <summary>
+            文字列を検査してセンテンスにマッチするかどうかを確認する
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果<para>true: ヒット</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.FindAll(System.String)">
+            <summary>
+            検査文字列の中にあるマッチするものをすべて抽出する
+            <para>Pythonのfindallを参考にした。</para>
+            <para>テスト未実施</para>
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.Selftest">
+            <summary>
+            セルフテスト
+            <para>
+            本クラスのテストを実施する。
+            未実装。
+            返り値はHealthyかUnhealthyにするか、各メソッドへの入力と返り値を並べたstringとするか。。。</para>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.Parse(System.String)">
+            <summary>
+            GGAを解析して、測位情報を返す
+            <para>現時点では緯度と経度と楕円体高しか返していないんだけど・・・</para>
+            </summary>
+            <param name="str">解析文字列</param>
+            <returns></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.GGA.#cctor">
+            <summary>
+            スタティックコンストラクタ
+            <para>メンバの初期化を行います。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.NmeaReader">
+            <summary>
+            NMEAパーサー
+            <para>NMEAのログを解析して、解析結果を返します。</para>
+            <para>
+            2011/7/17作りかけ
+            突貫で作ったので設計思想が固まっているわけでもない。
+            現時点では、ログを一旦全て読み込んでいるのでメモリ量がかなり必要となっている。
+            処理にも若干時間がかかる。
+            開発時間を優先した。
+            </para>
+            <para>
+            今後は、NMEAパーサが必要とされるなら、“object型でGGAクラスを返す”などの動作を実装する予定。
+            受け側では、以下の様にして呼び出す。
+            <code>
+            string nmea_str = "$GPGGA,*******";
+            GPS.NMEA nmea_parser = new GPS.NMEA();
+            object hoge;
+            
+            hoge = nmea_parser.parse(nmea_str);         // NMEAフォーマットの文字列を処理して、オブジェクトを返してもらう。
+            if(hoge.GetType() == tyepof(GPS.NMEA))      // オブジェクトの型をチェックし、任意の型と一致した場合に所望の処理を呼び出す。
+            {
+                // たとえば、こんな感じか？
+                int sat = hoge.sat;
+            }
+            </code>
+            NMEAパーサとして想定される使用環境
+            1) ログを処理する（センテンス毎・1エポック毎）
+            2) リアルタイムで処理する（センテンス毎に処理）
+            </para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.text">
+            <summary>
+            読み込んだテキストファイルを格納するstring変数
+            <para>バイナリデータには非対応</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.isOpenStatus">
+            <summary>
+            Streamでファイルを開いているかどうかを示す
+            <para>ファイルが開けていればture</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.fs">
+            <summary>
+            ファイル読み込みに使用するストリームオブジェクト
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.reader">
+            <summary>
+            ファイルをバイナリで読み込むためのオブジェクト
+            <para>ログのサイズが大きすぎて危険な場合はこちらでちょっとずづ読み込むようにする（予定）</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.errormsg">
+            <summary>
+            エラーメッセージ
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.NmeaReader.fname">
+            <summary>
+            オープンしたファイル名
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Close">
+            <summary>
+            ファイルを閉じる
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Dispose">
+            <summary>
+            リソースを開放します
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Open(System.String)">
+            <summary>
+            指定されたファイルを開く
+            <para>開いた後は、メモリ上に全展開となる。</para>
+            <para>現時点ではデータ内にバイナリが入っているとエラーとなる。</para>
+            </summary>
+            <param name="fname">ファイル名</param>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenWithDialog">
+            <summary>
+            ダイアログを用いてNMEA形式のログファイルを開く
+            <para>ファイルのOpenに成功したかどうかを返します。</para>
+            </summary>
+            <returns>true: ファイルを開くことができています</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenStream(System.String)">
+            <summary>
+            ストリームを使用してファイルを開く
+            <para>巨大なログファイルを処理する際に使用する。</para>
+            <para>ストリームを使用した処理に関しては未実装です。</para>
+            </summary>
+            <param name="fname"></param>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.IsNmea(System.String)">
+            <summary>
+            渡された文字列がNMEAセンテンスを含んでいるかを返す
+            <para>2012/8/9時点では、GGAとZDAのみを対象とした処理を行います。</para>
+            </summary>
+            <param name="txt">検査文字列</param>
+            <returns>検査結果, true: NMEAセンテンスを含んでいる</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositions">
+            <summary>
+            GGAから緯度・経度を配列で取得する
+            </summary>
+            <returns>座標を表すBlh構造体の配列</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetTimes">
+            <summary>
+            GGAからUTCの秒単位の時刻を配列で得る
+            <para>日付の経過などは考慮していない。</para>
+            </summary>
+            <returns>時刻を秒単位に変換したものの配列</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositioningResults">
+            <summary>
+            GPGGAをトリガにして、タイミングごとにまとめた測位情報を返す
+            <para>NMEAはセンテンスの出力順序を規定していないので、もしかすると時刻と測位位置がずれるかもしれない。</para>
+            </summary>
+            <returns>測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetDateTimes">
+            <summary>
+            ZDAから時刻データ列のみを取得する
+            GGAのトリガはないのでGetPositioningResults()とは時刻がずれる可能性がある。
+            日付も考慮してみる。
+            </summary>
+            <returns>測位情報履歴に含まれる時刻情報を配列にしたもの</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.NmeaReader.Finalize">
+            <summary>
+            デスコンストラクタ
+            <para>インスタンスの廃棄時に呼び出されるメソッド</para>
+            </summary>
+        </member>
+        <member name="P:GNSS.TextData.NMEA.NmeaReader.IsOpen">
+            <summary>
+            バッファ上に読み込み済みならtrueとなる。
+            2011/7/20　時点では、streamに関しては関知しない。
+            </summary>
+        </member>
+        <member name="P:GNSS.TextData.NMEA.NmeaReader.FileName">
+            <summary>
+            オープンしたファイル名
+            </summary>
+        </member>
+        <member name="T:GNSS.PositioningInfo">
+            <summary>
+            観測データを取り扱うクラス
+            <para>時刻と座標をセットとして取り扱う</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfo.ToString">
+            <summary>
+            データ内容をstring型にして返す
+            <para>データには、時刻・経度・緯度・楕円体高度が含まれます。</para>
+            <para>改行コードは含まれません。</para>
+            </summary>
+            <returns>文字列化した測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfo.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfo.Finalize">
+            <summary>
+            デスコンストラクタ
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfo.Time">
+            <summary>
+            測位時刻（エポック）
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfo.Position">
+            <summary>
+            測位座標
+            </summary>
+        </member>
+        <member name="T:GNSS.PositioningInfos">
+            <summary>
+            時系列の測位情報クラス
+            </summary>
+        </member>
+        <member name="F:GNSS.PositioningInfos.data">
+            <summary>
+            測位情報
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfos.Add(GNSS.PositioningInfo)">
+            <summary>
+            測位情報を追加する
+            </summary>
+            <param name="posInfo">測位情報</param>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetPositions">
+            <summary>
+            測位座標情報をコピーする
+            </summary>
+            <returns>測位座標情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetTimes">
+            <summary>
+            時刻情報をコピーしてくれる専用メソッド
+            </summary>
+            <returns>時刻情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetData">
+            <summary>
+            観測情報を配列に加工して返す
+            </summary>
+            <returns>観測情報</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.ToString">
+            <summary>
+            データ内容をstring型にして返す
+            データには、時刻・経度・緯度・高度が含まれます。
+            </summary>
+            <returns>文字列化した測位情報履歴</returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.SaveFileAsNormal(System.String)">
+            <summary>
+            指定ファイル名でデータを保存する
+            KMLに加工するメソッドもその内作りたいなぁ。
+            </summary>
+            <param name="fname">ファイル名</param>
+        </member>
+        <member name="M:GNSS.PositioningInfos.GetRectangleField">
+            <summary>
+            ログを全走査し、2つ以上のログが存在した場合に、ログを覆う長方形領域を返す
+            </summary>
+            <returns>
+            領域情報またはnull
+            <para>領域を構成できない場合はnullを返します。</para>
+            </returns>
+        </member>
+        <member name="M:GNSS.PositioningInfos.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:GNSS.PositioningInfos.Finalize">
+            <summary>
+            デスコンストラクタ
+            </summary>
+        </member>
+        <member name="P:GNSS.PositioningInfos.Length">
+            <summary>
+            保持しているデータ数
+            </summary>
+        </member>
+        <member name="T:GNSS.TextData.NMEA.ZDA">
+            <summary>
+            ZDAのみを扱うクラス
+            <para>未完成</para>
+            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.ZDA.regexMatch">
+            <summary>
+            ZDAセンテンスにマッチさせる正規表現
+            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
+            </summary>
+        </member>
+        <member name="F:GNSS.TextData.NMEA.ZDA.regexGroup">
+            <summary>
+            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
+            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
+            </summary>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.CheckMatch(System.String)">
+            <summary>
+            文字列を検査してセンテンスにマッチするかどうかを確認する
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果<para>true: ヒット</para></returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.FindAll(System.String)">
+            <summary>
+            検査文字列の中にあるマッチするものをすべて抽出する
+            <para>Pythonのfindallを参考にした。</para>
+            <para>テスト未実施</para>
+            </summary>
+            <param name="txt">被検査文字列</param>
+            <returns>検査結果</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.Parse(System.String)">
+            <summary>
+            ZDAを解析して、測位時刻を返す
+            <para>正規表現を利用したマッチをかけているので文字列処理でエラーが生じるとは思えませんが、エラー対策をかませています。</para>
+            </summary>
+            <param name="str">解析文字列</param>
+            <returns>時刻（UTC）</returns>
+        </member>
+        <member name="M:GNSS.TextData.NMEA.ZDA.#cctor">
+            <summary>
+            スタティックコンストラクタ
+            <para>メンバの初期化を行います。</para>
+            </summary>
+        </member>
+        <member name="T:GNSS.Length">
+            <summary>
+            南北、東西方向の距離・長さを収めるための構造体
+            </summary>
+        </member>
+        <member name="F:GNSS.Length.E">
+            <summary>東西方向の長さ</summary>
+        </member>
+        <member name="F:GNSS.Length.N">
+            <summary>南北方向の長さ</summary>
+        </member>
+        <member name="M:GNSS.Length.ToString">
+            <summary>
+            文字列化して返す
+            <para>デリミタにはカンマを使います。</para>
+            <para>格納は、経度方向,緯度方向の順です。</para>
+            </summary>
+            <returns>カンマ区切りで文字列化した情報</returns>
+        </member>
+        <member name="M:GNSS.Length.#ctor(System.Double,System.Double)">
+            <summary>
+            構造体初期化
+            </summary>
+            <param name="_E">経度方向の長さ</param>
+            <param name="_N">緯度方向の長さ</param>
+        </member>
         <member name="T:GNSS.Field.RectangleField">
             <summary>
             緯度経度により表現する長方形領域（緯度経度座標系では長方形ですがxyz座標系では台形のような曲面となります）
@@ -479,74 +973,27 @@
             <para>領域のサイズ（緯度経度長）を返します。</para>
             </summary>
         </member>
-        <member name="T:GNSS.TextData.NMEA.GGA">
+        <member name="T:GNSS.GnssTest">
             <summary>
-            GGAのみを扱うクラス
-            <para>未完成</para>
-            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
-            <para>南緯と西経は負数で表します。</para>
+            GNSS名前空間に属するクラス群をテストする静的クラス
             </summary>
         </member>
-        <member name="F:GNSS.TextData.NMEA.GGA.regexMatch">
+        <member name="M:GNSS.GnssTest.TwoBlhToDistanceTest">
             <summary>
-            GGAセンテンスにマッチさせる正規表現
-            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
+            2地点間の距離を求めるテスト
+            <para>コンソールアプリでの利用を前提としています。</para>
+            <para>ソースコードのコメントにおける、Google Earthの数字はver. 6.1.0.5001にて確認したものです。</para>
+            <para>Google Earthとの差は、計算アルゴリズム若しくは測地系に起因するものと考えられます。（未チェック）</para>
             </summary>
         </member>
-        <member name="F:GNSS.TextData.NMEA.GGA.regexGroup">
+        <member name="M:GNSS.GnssTest.ReadNmeaToRectangleFeild">
             <summary>
-            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
-            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
+            NMEA読み出し機能およびRectangleFieldクラスのテスト
+            <para>ダイアログを利用してNMEAファイルを開きます。</para>
+            <para>NMEA読み取り後に、測位結果を配列化して測位結果全体が収まるRectangleFieldオブジェクトを生成します。</para>
+            <para>未測位データは除いています。</para>
             </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.GGA.CheckMatch(System.String)">
-            <summary>
-            文字列を検査してセンテンスにマッチするかどうかを確認する
-            </summary>
-            <param name="txt">被検査文字列</param>
-            <returns>検査結果<para>true: ヒット</para></returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.GGA.FindAll(System.String)">
-            <summary>
-            検査文字列の中にあるマッチするものをすべて抽出する
-            <para>Pythonのfindallを参考にした。</para>
-            <para>テスト未実施</para>
-            </summary>
-            <param name="txt">被検査文字列</param>
-            <returns>検査結果</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.GGA.Selftest">
-            <summary>
-            セルフテスト
-            <para>
-            本クラスのテストを実施する。
-            未実装。
-            返り値はHealthyかUnhealthyにするか、各メソッドへの入力と返り値を並べたstringとするか。。。</para>
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.GGA.Parse(System.String)">
-            <summary>
-            GGAを解析して、測位情報を返す
-            <para>現時点では緯度と経度と楕円体高しか返していないんだけど・・・</para>
-            </summary>
-            <param name="str">解析文字列</param>
-            <returns></returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.GGA.#cctor">
-            <summary>
-            スタティックコンストラクタ
-            <para>メンバの初期化を行います。</para>
-            </summary>
-        </member>
-        <member name="T:GNSS.AngleUnit">
-            <summary>角度の単位</summary>
-        </member>
-        <member name="F:GNSS.AngleUnit.Degree">
-            <summary>度</summary>
-        </member>
-        <member name="F:GNSS.AngleUnit.Radian">
-            <summary>ラジアン</summary>
+            <returns>測位データ全体を覆う長方形領域情報</returns>
         </member>
         <member name="T:GNSS.TextData.SDF.SdfReader">
             <summary>
@@ -587,32 +1034,6 @@
             <summary>
             コンストラクタ
             </summary>
-        </member>
-        <member name="T:GNSS.Length">
-            <summary>
-            南北、東西方向の距離・長さを収めるための構造体
-            </summary>
-        </member>
-        <member name="F:GNSS.Length.E">
-            <summary>東西方向の長さ</summary>
-        </member>
-        <member name="F:GNSS.Length.N">
-            <summary>南北方向の長さ</summary>
-        </member>
-        <member name="M:GNSS.Length.ToString">
-            <summary>
-            文字列化して返す
-            <para>デリミタにはカンマを使います。</para>
-            <para>格納は、経度方向,緯度方向の順です。</para>
-            </summary>
-            <returns>カンマ区切りで文字列化した情報</returns>
-        </member>
-        <member name="M:GNSS.Length.#ctor(System.Double,System.Double)">
-            <summary>
-            構造体初期化
-            </summary>
-            <param name="_E">経度方向の長さ</param>
-            <param name="_N">緯度方向の長さ</param>
         </member>
         <member name="T:GNSS.Ecef">
             <summary>
@@ -684,427 +1105,6 @@
         <member name="P:GNSS.Ecef.Norm">
             <summary>
             ノルム（ベクトル長）
-            </summary>
-        </member>
-        <member name="T:GNSS.PositioningInfos">
-            <summary>
-            時系列の測位情報クラス
-            </summary>
-        </member>
-        <member name="F:GNSS.PositioningInfos.data">
-            <summary>
-            測位情報
-            </summary>
-        </member>
-        <member name="M:GNSS.PositioningInfos.Add(GNSS.PositioningInfo)">
-            <summary>
-            測位情報を追加する
-            </summary>
-            <param name="posInfo">測位情報</param>
-        </member>
-        <member name="M:GNSS.PositioningInfos.GetPositions">
-            <summary>
-            測位座標情報をコピーする
-            </summary>
-            <returns>測位座標情報</returns>
-        </member>
-        <member name="M:GNSS.PositioningInfos.GetTimes">
-            <summary>
-            時刻情報をコピーしてくれる専用メソッド
-            </summary>
-            <returns>時刻情報</returns>
-        </member>
-        <member name="M:GNSS.PositioningInfos.GetData">
-            <summary>
-            観測情報を配列に加工して返す
-            </summary>
-            <returns>観測情報</returns>
-        </member>
-        <member name="M:GNSS.PositioningInfos.ToString">
-            <summary>
-            データ内容をstring型にして返す
-            データには、時刻・経度・緯度・高度が含まれます。
-            </summary>
-            <returns>文字列化した測位情報履歴</returns>
-        </member>
-        <member name="M:GNSS.PositioningInfos.SaveFileAsNormal(System.String)">
-            <summary>
-            指定ファイル名でデータを保存する
-            KMLに加工するメソッドもその内作りたいなぁ。
-            </summary>
-            <param name="fname">ファイル名</param>
-        </member>
-        <member name="M:GNSS.PositioningInfos.GetRectangleField">
-            <summary>
-            ログを全走査し、2つ以上のログが存在した場合に、ログを覆う長方形領域を返す
-            </summary>
-            <returns>
-            領域情報またはnull
-            <para>領域を構成できない場合はnullを返します。</para>
-            </returns>
-        </member>
-        <member name="M:GNSS.PositioningInfos.#ctor">
-            <summary>
-            コンストラクタ
-            </summary>
-        </member>
-        <member name="M:GNSS.PositioningInfos.Finalize">
-            <summary>
-            デスコンストラクタ
-            </summary>
-        </member>
-        <member name="P:GNSS.PositioningInfos.Length">
-            <summary>
-            保持しているデータ数
-            </summary>
-        </member>
-        <member name="T:GNSS.TextData.NMEA.NmeaReader">
-            <summary>
-            NMEAパーサー
-            <para>NMEAのログを解析して、解析結果を返します。</para>
-            <para>
-            2011/7/17作りかけ
-            突貫で作ったので設計思想が固まっているわけでもない。
-            現時点では、ログを一旦全て読み込んでいるのでメモリ量がかなり必要となっている。
-            処理にも若干時間がかかる。
-            開発時間を優先した。
-            </para>
-            <para>
-            今後は、NMEAパーサが必要とされるなら、“object型でGGAクラスを返す”などの動作を実装する予定。
-            受け側では、以下の様にして呼び出す。
-            <code>
-            string nmea_str = "$GPGGA,*******";
-            GPS.NMEA nmea_parser = new GPS.NMEA();
-            object hoge;
-            
-            hoge = nmea_parser.parse(nmea_str);         // NMEAフォーマットの文字列を処理して、オブジェクトを返してもらう。
-            if(hoge.GetType() == tyepof(GPS.NMEA))      // オブジェクトの型をチェックし、任意の型と一致した場合に所望の処理を呼び出す。
-            {
-                // たとえば、こんな感じか？
-                int sat = hoge.sat;
-            }
-            </code>
-            NMEAパーサとして想定される使用環境
-            1) ログを処理する（センテンス毎・1エポック毎）
-            2) リアルタイムで処理する（センテンス毎に処理）
-            </para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.text">
-            <summary>
-            読み込んだテキストファイルを格納するstring変数
-            <para>バイナリデータには非対応</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.isOpenStatus">
-            <summary>
-            Streamでファイルを開いているかどうかを示す
-            <para>ファイルが開けていればture</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.fs">
-            <summary>
-            ファイル読み込みに使用するストリームオブジェクト
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.reader">
-            <summary>
-            ファイルをバイナリで読み込むためのオブジェクト
-            <para>ログのサイズが大きすぎて危険な場合はこちらでちょっとずづ読み込むようにする（予定）</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.errormsg">
-            <summary>
-            エラーメッセージ
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.NmeaReader.fname">
-            <summary>
-            オープンしたファイル名
-            </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.Close">
-            <summary>
-            ファイルを閉じる
-            </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.Dispose">
-            <summary>
-            リソースを開放します
-            </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.Open(System.String)">
-            <summary>
-            指定されたファイルを開く
-            <para>開いた後は、メモリ上に全展開となる。</para>
-            <para>現時点ではデータ内にバイナリが入っているとエラーとなる。</para>
-            </summary>
-            <param name="fname">ファイル名</param>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenWithDialog">
-            <summary>
-            ダイアログを用いてNMEA形式のログファイルを開く
-            <para>ファイルのOpenに成功したかどうかを返します。</para>
-            </summary>
-            <returns>true: ファイルを開くことができています</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.OpenStream(System.String)">
-            <summary>
-            ストリームを使用してファイルを開く
-            <para>巨大なログファイルを処理する際に使用する。</para>
-            <para>ストリームを使用した処理に関しては未実装です。</para>
-            </summary>
-            <param name="fname"></param>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.IsNmea(System.String)">
-            <summary>
-            渡された文字列がNMEAセンテンスを含んでいるかを返す
-            <para>2012/8/9時点では、GGAとZDAのみを対象とした処理を行います。</para>
-            </summary>
-            <param name="txt">検査文字列</param>
-            <returns>検査結果, true: NMEAセンテンスを含んでいる</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositions">
-            <summary>
-            GGAから緯度・経度を配列で取得する
-            </summary>
-            <returns>座標を表すBlh構造体の配列</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetTimes">
-            <summary>
-            GGAからUTCの秒単位の時刻を配列で得る
-            <para>日付の経過などは考慮していない。</para>
-            </summary>
-            <returns>時刻を秒単位に変換したものの配列</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetPositioningResults">
-            <summary>
-            GPGGAをトリガにして、タイミングごとにまとめた測位情報を返す
-            <para>NMEAはセンテンスの出力順序を規定していないので、もしかすると時刻と測位位置がずれるかもしれない。</para>
-            </summary>
-            <returns>測位情報履歴</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.GetDateTimes">
-            <summary>
-            ZDAから時刻データ列のみを取得する
-            GGAのトリガはないのでGetPositioningResults()とは時刻がずれる可能性がある。
-            日付も考慮してみる。
-            </summary>
-            <returns>測位情報履歴に含まれる時刻情報を配列にしたもの</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.#ctor">
-            <summary>
-            コンストラクタ
-            </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.NmeaReader.Finalize">
-            <summary>
-            デスコンストラクタ
-            <para>インスタンスの廃棄時に呼び出されるメソッド</para>
-            </summary>
-        </member>
-        <member name="P:GNSS.TextData.NMEA.NmeaReader.IsOpen">
-            <summary>
-            バッファ上に読み込み済みならtrueとなる。
-            2011/7/20　時点では、streamに関しては関知しない。
-            </summary>
-        </member>
-        <member name="P:GNSS.TextData.NMEA.NmeaReader.FileName">
-            <summary>
-            オープンしたファイル名
-            </summary>
-        </member>
-        <member name="T:GNSS.GnssTest">
-            <summary>
-            GNSS名前空間に属するクラス群をテストする静的クラス
-            </summary>
-        </member>
-        <member name="M:GNSS.GnssTest.TwoBlhToDistanceTest">
-            <summary>
-            2地点間の距離を求めるテスト
-            <para>コンソールアプリでの利用を前提としています。</para>
-            <para>ソースコードのコメントにおける、Google Earthの数字はver. 6.1.0.5001にて確認したものです。</para>
-            <para>Google Earthとの差は、計算アルゴリズム若しくは測地系に起因するものと考えられます。（未チェック）</para>
-            </summary>
-        </member>
-        <member name="M:GNSS.GnssTest.ReadNmeaToRectangleFeild">
-            <summary>
-            NMEA読み出し機能およびRectangleFieldクラスのテスト
-            <para>ダイアログを利用してNMEAファイルを開きます。</para>
-            <para>NMEA読み取り後に、測位結果を配列化して測位結果全体が収まるRectangleFieldオブジェクトを生成します。</para>
-            <para>未測位データは除いています。</para>
-            </summary>
-            <returns>測位データ全体を覆う長方形領域情報</returns>
-        </member>
-        <member name="T:GNSS.PositioningInfo">
-            <summary>
-            観測データを取り扱うクラス
-            <para>時刻と座標をセットとして取り扱う</para>
-            </summary>
-        </member>
-        <member name="M:GNSS.PositioningInfo.ToString">
-            <summary>
-            データ内容をstring型にして返す
-            <para>データには、時刻・経度・緯度・楕円体高度が含まれます。</para>
-            <para>改行コードは含まれません。</para>
-            </summary>
-            <returns>文字列化した測位情報履歴</returns>
-        </member>
-        <member name="M:GNSS.PositioningInfo.#ctor">
-            <summary>
-            コンストラクタ
-            </summary>
-        </member>
-        <member name="M:GNSS.PositioningInfo.Finalize">
-            <summary>
-            デスコンストラクタ
-            </summary>
-        </member>
-        <member name="P:GNSS.PositioningInfo.Time">
-            <summary>
-            測位時刻（エポック）
-            </summary>
-        </member>
-        <member name="P:GNSS.PositioningInfo.Position">
-            <summary>
-            測位座標
-            </summary>
-        </member>
-        <member name="T:GNSS.TextData.NMEA.ZDA">
-            <summary>
-            ZDAのみを扱うクラス
-            <para>未完成</para>
-            <para>staticクラスとして宣言するので、インスタンスの確保を宣言せずとも使えます。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.ZDA.regexMatch">
-            <summary>
-            ZDAセンテンスにマッチさせる正規表現
-            <para>NMEAのバージョンの違いをどうやって吸収するかはまだ未定</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.TextData.NMEA.ZDA.regexGroup">
-            <summary>
-            GGAセンテンスにマッチさせて、内部の値をグループ化する正規表現
-            <para>Pythonと違ってこちらだけでも用は足りるかもしれない。</para>
-            </summary>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.ZDA.CheckMatch(System.String)">
-            <summary>
-            文字列を検査してセンテンスにマッチするかどうかを確認する
-            </summary>
-            <param name="txt">被検査文字列</param>
-            <returns>検査結果<para>true: ヒット</para></returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.ZDA.FindAll(System.String)">
-            <summary>
-            検査文字列の中にあるマッチするものをすべて抽出する
-            <para>Pythonのfindallを参考にした。</para>
-            <para>テスト未実施</para>
-            </summary>
-            <param name="txt">被検査文字列</param>
-            <returns>検査結果</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.ZDA.Parse(System.String)">
-            <summary>
-            ZDAを解析して、測位時刻を返す
-            <para>正規表現を利用したマッチをかけているので文字列処理でエラーが生じるとは思えませんが、エラー対策をかませています。</para>
-            </summary>
-            <param name="str">解析文字列</param>
-            <returns>時刻（UTC）</returns>
-        </member>
-        <member name="M:GNSS.TextData.NMEA.ZDA.#cctor">
-            <summary>
-            スタティックコンストラクタ
-            <para>メンバの初期化を行います。</para>
-            </summary>
-        </member>
-        <member name="T:GNSS.Field.FieldParameter">
-            <summary>
-            長方形領域を表すRectangleFieldクラスのパラメータ
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.upperLat">
-            パラメータ *******************************************************************
-            <summary>
-            北限の緯度
-            <para>未定義ではNaNを取ります。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.lowerLat">
-            <summary>
-            南限の緯度
-            <para>未定義ではNaNを取ります。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.eastLon">
-            <summary>
-            東端の経度
-            <para>未定義ではNaNを取ります。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.westLon">
-            <summary>
-            西端の経度
-            <para>未定義ではNaNを取ります。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.centerLon">
-            <summary>
-            中央の経度
-            <para>未定義ではNaNを取ります。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.unit">
-            <summary>
-            緯度・経度の単位
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldParameter.datum">
-            <summary>
-            測地系
-            </summary>
-        </member>
-        <member name="M:GNSS.Field.FieldParameter.#ctor(GNSS.AngleUnit,Geodesy.GeodeticDatum.Datum)">
-            メソッド *******************************************************************
-            <summary>
-            コンストラクタ
-            </summary>
-            <param name="unit">単位(°or rad)</param>
-            <param name="datum">測地系</param>
-        </member>
-        <member name="P:GNSS.Field.FieldParameter.AreaIsZero">
-            プロパティ *******************************************************************
-            <summary>
-            面積が存在するかを返す
-            <para>true: 面積は0。</para>
-            </summary>
-        </member>
-        <member name="T:GNSS.Field.FieldKind">
-            <summary>
-            領域の表し方を規定する列挙体
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldKind.Rectangle">
-            <summary>
-            長方形の領域
-            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldKind.Circlle">
-            <summary>
-            円形領域
-            <para>高さ方向に厚みがなくてもエラー扱いとはしません。</para>
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldKind.RectangularParallelepiped">
-            <summary>
-            直方体
-            </summary>
-        </member>
-        <member name="F:GNSS.Field.FieldKind.Shere">
-            <summary>
-            球状領域
             </summary>
         </member>
     </members>
